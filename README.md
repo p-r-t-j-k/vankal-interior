@@ -10,3 +10,9 @@ Premium static website for Vankal Interior, Bhanawas / Samdari / Balotra.
 
 ## Free GitHub Pages deployment
 Create a **public** repository, upload this folder to the `main` branch, then open **Settings → Pages → Source: GitHub Actions**. The included workflow publishes on every push to `main`.
+
+
+### Portfolio photos
+- Kitchen: kitchen-1.webp, kitchen-2.webp, kitchen-3.webp
+- Office: office-1.webp through office-4.webp
+- Bedroom: bedroom-1.webp through bedroom-3.webp
