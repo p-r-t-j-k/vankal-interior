@@ -1,49 +1,47 @@
-const year = document.getElementById('year');
-if (year) year.textContent = new Date().getFullYear();
+const nav = document.getElementById("nav");
+const progress = document.getElementById("progress");
+const menuBtn = document.getElementById("menuBtn");
+const menu = document.getElementById("menu");
+const hero = document.querySelector(".hero");
+const gallery = document.getElementById("heroGallery");
+const title = document.querySelector(".display-title");
 
-const menuBtn = document.querySelector('.menu-btn');
-const navLinks = document.querySelector('.nav-links');
-if (menuBtn && navLinks) {
-  menuBtn.addEventListener('click', () => {
-    const open = navLinks.classList.toggle('mobile-open');
-    menuBtn.setAttribute('aria-expanded', open);
-  });
-  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('mobile-open')));
-}
+window.addEventListener("scroll", () => {
+  const y = window.scrollY;
+  nav.classList.toggle("scrolled", y > 30);
+  const max = document.documentElement.scrollHeight - innerHeight;
+  progress.style.width = `${Math.min(100, (y / max) * 100)}%`;
 
-const revealObserver = new IntersectionObserver(entries => {
-  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
-}, { threshold: .12 });
-document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  if (hero && y < innerHeight * 1.05) {
+    const fade = Math.max(0, 1 - y / (innerHeight * .9));
+    title.style.opacity = fade;
+    title.style.transform = `translate3d(0,${y * -.08}px,0) scale(${1 - y*.00005})`;
+    gallery.style.transform = `translate3d(0,${y * -.035}px,0)`;
+  }
+}, {passive:true});
 
-const tiltCards = document.querySelectorAll('[data-tilt]');
-tiltCards.forEach(card => {
-  const strength = Number(card.dataset.tilt || 8);
-  card.addEventListener('pointermove', e => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.innerWidth < 700) return;
-    const r = card.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - .5;
-    const y = (e.clientY - r.top) / r.height - .5;
-    card.style.setProperty('--rx', `${(-y * strength).toFixed(2)}deg`);
-    card.style.setProperty('--ry', `${(x * strength).toFixed(2)}deg`);
-    card.style.transform = `perspective(1200px) rotateX(${(-y * strength).toFixed(2)}deg) rotateY(${(x * strength).toFixed(2)}deg) translateZ(5px)`;
-  });
-  card.addEventListener('pointerleave', () => {
-    card.style.removeProperty('--rx'); card.style.removeProperty('--ry');
-    card.style.transform = '';
-  });
-});
+menuBtn.addEventListener("click", () => menu.classList.toggle("open"));
+menu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => menu.classList.remove("open")));
 
-// Subtle depth movement for the hero photo stack.
-const hero = document.querySelector('.hero-3d');
-if (hero) {
-  hero.addEventListener('pointermove', e => {
-    if (window.innerWidth < 700 || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const r = hero.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width - .5;
-    const y = (e.clientY - r.top) / r.height - .5;
-    hero.style.setProperty('--rx', `${(-y * 6).toFixed(2)}deg`);
-    hero.style.setProperty('--ry', `${(x * 8).toFixed(2)}deg`);
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add("visible");
   });
-  hero.addEventListener('pointerleave', () => { hero.style.setProperty('--rx','0deg'); hero.style.setProperty('--ry','0deg'); });
+}, {threshold:.14});
+document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+if (window.matchMedia("(pointer:fine)").matches && gallery) {
+  gallery.addEventListener("mousemove", (e) => {
+    const r = gallery.getBoundingClientRect();
+    const x = (e.clientX-r.left)/r.width-.5;
+    const y = (e.clientY-r.top)/r.height-.5;
+    gallery.querySelector(".card-front").style.transform = `rotate(${2+x*2}deg) translate3d(${x*12}px,${y*10}px,80px)`;
+    gallery.querySelector(".card-mid").style.transform = `rotate(${-6+x*3}deg) translate3d(${x*8}px,${y*8}px,20px)`;
+    gallery.querySelector(".card-back").style.transform = `rotate(${8+x*2}deg) translate3d(${x*5}px,${y*5}px,-80px)`;
+  });
+  gallery.addEventListener("mouseleave", () => {
+    gallery.querySelector(".card-front").style.transform = "rotate(2deg) translateZ(80px)";
+    gallery.querySelector(".card-mid").style.transform = "rotate(-6deg) translateZ(20px)";
+    gallery.querySelector(".card-back").style.transform = "rotate(8deg) translateZ(-80px)";
+  });
 }

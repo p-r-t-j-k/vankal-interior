@@ -1,18 +1,9 @@
-# Vankal Interior — GitHub Pages Website
+# माँ वांकल इंटीरियर — V4
+Premium Hindi-first static website for GitHub Pages.
+Brand: माँ वांकल इंटीरियर
+Location: भानावास, समदड़ी, बालोतरा — 344021
+Contact: 8852097076
 
-Premium static website for Vankal Interior, Bhanawas / Samdari / Balotra.
-
-## Before publishing
-1. Replace every `YOUR-USERNAME` in `index.html`, `robots.txt`, and `sitemap.xml` with the GitHub username.
-2. Replace the Unsplash concept images with final AI-generated and/or real project photos in `/assets/`.
-3. Add the final Google Maps URL and social profiles when available.
-4. Only publish genuine customer reviews and real project claims.
-
-## Free GitHub Pages deployment
-Create a **public** repository, upload this folder to the `main` branch, then open **Settings → Pages → Source: GitHub Actions**. The included workflow publishes on every push to `main`.
-
-
-### Portfolio photos
-- Kitchen: kitchen-1.webp, kitchen-2.webp, kitchen-3.webp
-- Office: office-1.webp through office-4.webp
-- Bedroom: bedroom-1.webp through bedroom-3.webp
+## Upload
+Upload the contents of this folder into the repository root (not the wrapper folder).
+Keep `assets/` at the repository root alongside `index.html`.
